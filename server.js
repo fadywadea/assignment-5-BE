@@ -1,12 +1,14 @@
 "use strict";
 
 import express from 'express';
-import { mongooseConnection } from './database/dbConnection.js';
 import userRouter from './src/modules/users/user.routes.js';
 import postRouter from './src/modules/posts/post.routes.js';
+import { databaseConnection } from './database/dbConnection.js';
 
 const app = express();
 const port = 3000;
+
+databaseConnection();
 
 app.use(express.json());
 

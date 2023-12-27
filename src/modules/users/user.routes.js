@@ -7,22 +7,16 @@ import { checkEmailExist } from '../../middleware/checkEmailExist.js';
 import { authUpdateUser } from '../../middleware/authenticationUpdateUser.js';
 
 const userRouter = express.Router();
-const baseUrl = '/user';
+const baseUrl = '/users';
 
-// All users
-userRouter.get(`${baseUrl}`, getAllUsers);
-
-// Sing up
-userRouter.post(`${baseUrl}`, checkEmailExist, hashPassword, signUp);
+// All users && Sing up
+userRouter.route(baseUrl).get(getAllUsers).post(checkEmailExist, hashPassword, signUp);
 
 // Sign in
 userRouter.post(`${baseUrl}/signin`, signIn);
 
-// Update user
-userRouter.put(`${baseUrl}/:id`, authUpdateUser, updateUser);
-
-// Delete user
-userRouter.delete(`${baseUrl}/:id`, deleteUser);
+// Update user && Delete user
+userRouter.route(`${baseUrl}/:id`).patch(authUpdateUser, updateUser).delete(deleteUser);
 
 // Search for user where his name start with...
 userRouter.get(`${baseUrl}/search-users`, searchUsers);

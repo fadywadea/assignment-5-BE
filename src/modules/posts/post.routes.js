@@ -9,20 +9,14 @@ const baseUrl = '/posts';
 // Add note
 postRouter.get(baseUrl, getAllNotes);
 
-// Add Posts
-postRouter.post(`${baseUrl}/:id`, addPosts);
+// Add Posts && Delete Posts && Update Post
+postRouter.route(`${baseUrl}/:id`).post(addPosts).delete(DeletePosts).patch(updatePosts);
 
-// Delete Posts
-postRouter.delete(`${baseUrl}/:id`, DeletePosts);
-
-// Update Post
-postRouter.patch(`${baseUrl}/:id`, updatePosts);
-
-//get all posts with their owners information (using populate)
+//get all posts with their owners information
 postRouter.get(`${baseUrl}/owners-posts`, ownersPosts);
 
 // Sort Posts By Date
-postRouter.get(`${baseUrl}/sort-users`, sortUsersDate);
+postRouter.get(`${baseUrl}/sort-posts`, sortUsersDate);
 
 export default postRouter;
 

@@ -3,13 +3,11 @@
 import { postModel } from "../../../database/models/post.model.js";
 import { userModel } from "../../../database/models/user.model.js";
 
-
 // All Posts
 export const getAllNotes = async (req, res) => {
   const posts = await postModel.find();
   res.status(200).json({ data: posts });
 }
-
 
 // Add Post
 export const addPosts = async (req, res) => {
@@ -30,7 +28,6 @@ export const addPosts = async (req, res) => {
     }
   }
 };
-
 
 // Delete Post
 export const DeletePosts = async (req, res) => {
@@ -56,7 +53,6 @@ export const DeletePosts = async (req, res) => {
   }
 };
 
-
 // Update Post
 export const updatePosts = async (req, res) => {
   const findUser = await userModel.findById({ _id: req.params.id });
@@ -79,16 +75,14 @@ export const updatePosts = async (req, res) => {
   }
 };
 
-
 // Owners Posts
 export const ownersPosts = async (req, res) => {
   const ownerPosts = await postModel.find().populate('createdBy', 'userName email age gender phone -_id');
-  res.status(200).json({ ownerPosts });
+  res.status(200).json({ data: ownerPosts });
 };
-
 
 // Sort Posts By Date
 export const sortUsersDate = async (req, res) => {
-  let posts = await postModel.find().sort([['createdAt', 'descending']]);
-  res.status(200).json({ posts });
+  const posts = await postModel.find().sort([['createdAt', 'descending']]);
+  res.status(200).json({ data: posts });
 }

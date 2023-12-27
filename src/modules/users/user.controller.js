@@ -21,9 +21,9 @@ export const signIn = async (req, res) => {
   const user = await userModel.findOne({ email });
   user ?
     bcrypt.compareSync(password, user.password) ?
-      res.status(200).json(`Welcome ${user.userName}.`) :
-      res.status(401).json('Invalid Password.') :
-    res.status(401).json('Invalid Email.');
+      res.status(200).json({ message: `Welcome ${user.userName}.` }) :
+      res.status(401).json({ message: "Invalid Password." }) :
+    res.status(401).json({ message: "Invalid Email." });
 };
 
 // Update user
@@ -35,7 +35,7 @@ export const updateUser = async (req, res) => {
 export const deleteUser = async (req, res) => {
   const deletedUser = await userModel.findByIdAndDelete({ _id: req.params.id });
   deletedUser == null ?
-    res.status(404).json("User Not founded.") :
+    res.status(404).json({ message: "User Not founded." }) :
     res.status(200).json({ message: "Deleted successfully." });
 };
 
@@ -44,8 +44,8 @@ export const searchUsers = async (req, res) => {
   const { userName, age } = req.body;
   const users = await userModel.find({ userName: new RegExp(`^${userName}`), age: { $lt: age } });
   !users.length ?
-    res.status(404).json("No user found.") :
-    res.status(200).json({users});
+    res.status(404).json({ message: "No users found." }) :
+    res.status(200).json({ data: users });
 };
 
 // Search for user where his age is between...
@@ -53,6 +53,6 @@ export const searchUserAge = async (req, res) => {
   const { ageX, ageY } = req.body;
   const users = await userModel.find({ age: { $gt: ageX, $lt: ageY } });
   !users.length ?
-    res.status(404).json("No user found.") :
-    res.status(200).json({users});
+    res.status(404).json({ message: "No users found." }) :
+    res.status(200).json({ data: users });
 };

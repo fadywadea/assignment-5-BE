@@ -19,17 +19,3 @@ postRouter.get(`${baseUrl}/owners-posts`, ownersPosts);
 postRouter.get(`${baseUrl}/sort-posts`, sortUsersDate);
 
 export default postRouter;
-
-
-
-
-
-
-
-
-
-
-
-
-// 5- get all posts with their owners information(using populate)
-// 6- sort posts descending (By date)

@@ -3,12 +3,12 @@
 import express from 'express';
 import userRouter from './src/modules/users/user.routes.js';
 import postRouter from './src/modules/posts/post.routes.js';
-import { databaseConnection } from './database/dbConnection.js';
+import { dbConnection } from './database/dbConnection.js';
 
 const app = express();
 const port = 3000;
 
-databaseConnection();
+dbConnection();
 
 app.use(express.json());
 

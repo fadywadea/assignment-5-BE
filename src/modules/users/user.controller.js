@@ -2,11 +2,12 @@
 
 import { userModel } from "../../../database/models/user.model.js";
 import bcrypt from 'bcrypt';
+import jwt from "jsonwebtoken";
 
 // All users
 export const getAllUsers = async (req, res) => {
-  const users = await userModel.find();
-  res.status(200).json({ data: users });
+    const users = await userModel.find();
+    res.status(200).json({ data: users })
 };
 
 // Sing up
@@ -19,11 +20,16 @@ export const signUp = async (req, res) => {
 export const signIn = async (req, res) => {
   const { email, password } = req.body;
   const user = await userModel.findOne({ email });
-  user ?
-    bcrypt.compareSync(password, user.password) ?
-      res.status(200).json({ message: `Welcome ${user.userName}.` }) :
-      res.status(401).json({ message: "Invalid Password." }) :
+  if (user) {
+    if (bcrypt.compareSync(password, user.password)) {
+      let token = jwt.sign({ userId: user._id, role: user.role }, "myNameFady");
+      return res.status(200).json({ message: `Welcome ${user.userName}.`, token })
+    } else {
+      res.status(401).json({ message: "Invalid Password." })
+    }
+  } else {
     res.status(401).json({ message: "Invalid Email." });
+  }
 };
 
 // Update user
@@ -45,7 +51,7 @@ export const searchUsers = async (req, res) => {
   const users = await userModel.find({ userName: new RegExp(`^${userName}`), age: { $lt: age } });
   !users.length ?
     res.status(404).json({ message: "No users found." }) :
-    res.status(200).json({ data: users });
+    res.status(200).json({ data: users }); 
 };
 
 // Search for user where his age is between...

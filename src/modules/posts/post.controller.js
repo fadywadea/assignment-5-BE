@@ -55,18 +55,18 @@ export const DeletePosts = async (req, res) => {
 
 // Update Post
 export const updatePosts = async (req, res) => {
-  const findUser = await userModel.findById({ _id: req.params.id });
   const userId = req.params.id;
-  const { _id, title, content } = req.body;
+  const findUser = await userModel.findById({ _id: userId });
   if (!findUser) {
     res.status(401).json({ message: "Unauthorized." });
   } else {
-    const postId = await postModel.findById({ _id });
+    const postId = await postModel.findById({ _id: req.body._id });
     if (!postId) {
       res.status(404).json({ message: "Post not found." });
     } else {
       if (userId == postId.createdBy) {
-        await postModel.updateOne({ _id }, { title, content }, { new: true });
+        const { title, content } = req.body;
+        await postModel.findByIdAndUpdate({ _id: req.body._id }, { title, content }, { new: true });
         res.status(200).json({ message: "Updated post successfully." });
       } else {
         res.status(401).json({ message: "Unauthorized." });

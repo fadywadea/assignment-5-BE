@@ -2,9 +2,11 @@
 
 import express from 'express';
 import { DeletePosts, addPosts, getAllNotes, ownersPosts, sortUsersDate, updatePosts } from './post.controller.js';
+import { auth } from '../../middleware/auth.js';
 
 const postRouter = express.Router();
 const baseUrl = '/posts';
+postRouter.use(auth);
 
 // Add note
 postRouter.get(baseUrl, getAllNotes);
